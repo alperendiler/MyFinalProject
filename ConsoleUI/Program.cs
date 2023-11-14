@@ -1,45 +1,62 @@
 ﻿using Business.Concrete;
+using Core.Utilities.Results;
 using DataAccess.Concrete.EntityFramework;
-using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 
-ProductManager productManager = new ProductManager(new EfProductDal());
-CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
 
+//Categories();
 
-foreach (var category in categoryManager.GetAll())
+ProductTest();
 
+//Orders();
+
+static void Categories()
 {
-    Console.Write(category.CategoryId + "-) ");
+    CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
+
+    foreach (var category in categoryManager.GetAll())
+
+    {
+        Console.Write(category.CategoryId + "-) ");
 
 
-    Console.WriteLine(category.CategoryName);
+        Console.WriteLine(category.CategoryName);
 
 
+    }
 }
 
-
-foreach (var product in productManager.GetAllByCategoryId(1))
-
+static void ProductTest()
 {
-    Console.WriteLine(product.ProductName);
-    Console.WriteLine(product.UnitPrice);
-    Console.WriteLine(product.CategoryId);
+    ProductManager productManager = new ProductManager(new EfProductDal());
+    var result = productManager.GetProductDetails();
+    if (result.IsSuccess== true)
+    {
+        foreach (var product in result.Data)
 
+        {
+            Console.WriteLine(product.ProductName);
+            Console.WriteLine(product.CategoryName);
+            Console.WriteLine(product.UnitsInStock);
 
+        }
+    }
+    else
+    {
+        Console.WriteLine(result.Message);
+    }
+    
 }
 
+static void Orders()
+{
+    OrderManager orderManager = new OrderManager(new EfOrderDal());
+
+    foreach (var order in orderManager.GetAll())
+
+    {
+        Console.WriteLine(order.OrderId + "-) ");
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+    }
+}
