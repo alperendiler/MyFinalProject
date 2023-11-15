@@ -29,23 +29,9 @@ static void Categories()
 static void ProductTest()
 {
     ProductManager productManager = new ProductManager(new EfProductDal());
-    var result = productManager.GetProductDetails();
-    if (result.IsSuccess== true)
-    {
-        foreach (var product in result.Data)
+    Console.WriteLine(productManager.GetProductDetails().IsSuccess);
 
-        {
-            Console.WriteLine(product.ProductName);
-            Console.WriteLine(product.CategoryName);
-            Console.WriteLine(product.UnitsInStock);
 
-        }
-    }
-    else
-    {
-        Console.WriteLine(result.Message);
-    }
-    
 }
 
 static void Orders()
