@@ -5,7 +5,7 @@ using Entities.Concrete;
 
 
 //Categories();
-
+Console.WriteLine(DateTime.Now.Hour);
 ProductTest();
 
 //Orders();
@@ -29,8 +29,8 @@ static void Categories()
 static void ProductTest()
 {
     ProductManager productManager = new ProductManager(new EfProductDal());
-    Console.WriteLine(productManager.GetProductDetails().IsSuccess);
 
+    Console.WriteLine(productManager.Get(1));
 
 }
 
