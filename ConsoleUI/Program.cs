@@ -1,12 +1,12 @@
-﻿using Business.Concrete;
+﻿using Business.Abstract;
+using Business.Concrete;
 using Core.Utilities.Results;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 
 
-//Categories();
-Console.WriteLine(DateTime.Now.Hour);
-ProductTest();
+Categories();
+//ProductTest();
 
 //Orders();
 
@@ -21,8 +21,6 @@ static void Categories()
 
 
         Console.WriteLine(category.CategoryName);
-
-
     }
 }
 
@@ -38,7 +36,7 @@ static void Orders()
 {
     OrderManager orderManager = new OrderManager(new EfOrderDal());
 
-    foreach (var order in orderManager.GetAll())
+    foreach (var order in orderManager.GetAll().Data)
 
     {
         Console.WriteLine(order.OrderId + "-) ");
