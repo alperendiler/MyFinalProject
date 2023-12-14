@@ -20,8 +20,7 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(p => p.ProductName).MinimumLength(2);
             RuleFor(p => p.ProductName).Must(StartWithA);
 
-
-
+                
 
         }
 

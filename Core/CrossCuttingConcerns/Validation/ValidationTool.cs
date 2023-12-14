@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Core.CrossCuttingConcerns.Validation
 {
     public static class ValidationTool
-    {
+    {                             //Validator class , Validate class          ProductValidator, Product 
         public static void Validate(IValidator validator,object entity)
         {
             var context = new ValidationContext<object>(entity);
