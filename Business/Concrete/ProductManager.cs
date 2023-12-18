@@ -51,7 +51,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Product>(_productDal.Get(p => p.CategoryId == id));
         }
 
-
+        [CahceAspect] //key, value pair
         public IDataResult<List<Product>> GetAll()
         {
             if (DateTime.Now.Hour == 12)

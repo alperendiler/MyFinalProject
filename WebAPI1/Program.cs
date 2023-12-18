@@ -3,8 +3,13 @@ using Autofac.Extensions.DependencyInjection;
 using Business.Abstract;
 using Business.Concrete;
 using Business.DependencyResolvers.Autofac;
+using Core.DependencyResolvers;
+using Core.Utilities.IoC;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
+using Core.Utilities.IoC;
+using Core.Extensions;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +29,10 @@ builder.Host.ConfigureContainer<ContainerBuilder>(options =>
 {
     options.RegisterModule(new AutofacBusinessModule());
 });
-
+builder.Services.AddDependencyResolvers(new ICoreModel[]
+{
+    new CoreModel(),
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

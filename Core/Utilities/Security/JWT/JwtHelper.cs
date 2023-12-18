@@ -57,7 +57,7 @@ namespace Core.Utilities.Security.JWT
                 audience: tokenOptions.Audience,
                 expires: _accessTokenExpiration,
                 //Şuandan önceki bir değer verilemez
-                notBefore: DateTime.Now,
+                //notBefore: DateTime.Now,
                 claims: SetClaims(user, operationClaims),
                 signingCredentials: signingCredentials
             );
