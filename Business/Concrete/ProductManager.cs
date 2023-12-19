@@ -4,6 +4,9 @@ using Business.CCS;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Aspects.Caching;
+using Core.Aspects.Performance;
+using Core.Aspects.Transaction;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
@@ -16,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Business.Concrete
 {
@@ -31,6 +35,7 @@ namespace Business.Concrete
 
         }
         [SecuredOperation("admin,editör")]
+        [CacheRemoveAspect("IProductService.Get")]
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
@@ -51,7 +56,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Product>(_productDal.Get(p => p.CategoryId == id));
         }
 
-        [CahceAspect] //key, value pair
+        [CacheAspect]
         public IDataResult<List<Product>> GetAll()
         {
             if (DateTime.Now.Hour == 12)
@@ -72,7 +77,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.UnitPrice >= min && p.UnitPrice <= max));
         }
-
+        [PerformanceAspect(5)]
         public IDataResult<Product> GetById(int productId)
         {
             return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));
@@ -82,14 +87,27 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails(), Messages.ProductsListed);
         }
-
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Update(Product product)
         {
 
             _productDal.Update(product);
             return new SuccessResult();
         }
-
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Product product)
+        {
+         
+                
+                    Add(product);
+                    if (product.UnitPrice < 10)
+                    {
+                        throw new Exception();
+                    }
+                    Add(product);
+            return null;
+              
+        }
         private IResult CheckIfProductCountOfCategoryCorrect(int categoryId)
         {
 
@@ -124,5 +142,6 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+    
     }
 }

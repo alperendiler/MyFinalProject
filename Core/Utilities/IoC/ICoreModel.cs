@@ -9,6 +9,7 @@ namespace Core.Utilities.IoC
 {
     public interface ICoreModel
     {
+
         void Load(IServiceCollection serviceCollection);
     }
 }
